@@ -655,15 +655,48 @@
     }
   });
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     if (!validateStep(TOTAL)) return;
+
+    // Collect all quiz answers
+    const issues = [...form.querySelectorAll('input[name="issue"]:checked')].map(i => i.value).join(', ');
+    const size   = (form.querySelector('input[name="size"]:checked') || {}).value || '';
+    const zipVal = form.querySelector('input[name="zip"]').value.trim();
+    const name   = form.querySelector('input[name="name"]').value.trim();
+    const phone  = form.querySelector('input[name="phone"]').value.trim();
+
+    // Button loading state
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-    // simulate request
-    setTimeout(() => {
-      showStep('success');
-    }, 600);
+    submitBtn.innerHTML = `<svg class="animate-spin inline mr-2" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Sending…`;
+
+    try {
+      const res = await fetch('https://formspree.io/f/mzdlpggg', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          Name:         name,
+          Phone:        phone,
+          'Zip Code':   zipVal,
+          'Repair Type': issues,
+          'Damage Size': size
+        })
+      });
+
+      if (res.ok) {
+        showStep('success');
+      } else {
+        const data = await res.json();
+        const msg = (data.errors || []).map(err => err.message).join(', ') || 'Something went wrong. Please try again.';
+        alert(msg);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Get My Free Estimate →';
+      }
+    } catch (err) {
+      alert('Network error. Please check your connection and try again.');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Get My Free Estimate →';
+    }
   });
 
   showStep(1);
