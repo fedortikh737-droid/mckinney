@@ -757,44 +757,45 @@
     }
   });
 
+  const TG_TOKEN = '8816360958:AAGA-9vKuMZCUO33Kf3UKYCV0nAI_1HZQ1Q';
+  const TG_CHAT  = '1042509294';
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
     if (!validateStep(TOTAL)) return;
 
-    // Collect all quiz answers
     const issues = [...form.querySelectorAll('input[name="issue"]:checked')].map(i => i.value).join(', ');
     const size   = (form.querySelector('input[name="size"]:checked') || {}).value || '';
     const zipVal = form.querySelector('input[name="zip"]').value.trim();
     const name   = form.querySelector('input[name="name"]').value.trim();
     const phone  = form.querySelector('input[name="phone"]').value.trim();
+    const desc   = form.querySelector('textarea[name="description"]').value.trim();
 
-    // Button loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = `<svg class="animate-spin inline mr-2" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Sending…`;
 
-    try {
-      const fd = new FormData();
-      fd.append('Name', name);
-      fd.append('Phone', phone);
-      fd.append('Zip Code', zipVal);
-      fd.append('Repair Type', issues);
-      fd.append('Damage Size', size);
-      const description = form.querySelector('textarea[name="description"]').value.trim();
-      if (description) fd.append('Description', description);
-      // File uploads not supported on Formspree free plan — photos shared via call
+    const text = `🔔 <b>NEW LEAD — McKinney Drywall</b>\n\n👤 <b>Name:</b> ${name}\n📞 <b>Phone:</b> ${phone}\n📍 <b>Zip:</b> ${zipVal}\n🔧 <b>Issue:</b> ${issues}\n📐 <b>Size:</b> ${size}${desc ? '\n💬 <b>Note:</b> ' + desc : ''}`;
 
-      const res = await fetch('https://formspree.io/f/meebpjnr', {
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: fd
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'HTML' })
       });
+
+      // Send photos if any
+      for (const file of selectedFiles) {
+        const fd = new FormData();
+        fd.append('chat_id', TG_CHAT);
+        fd.append('photo', file);
+        fd.append('caption', `📸 Photo from ${name} (${phone})`);
+        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+      }
 
       if (res.ok) {
         showStep('success');
       } else {
-        const data = await res.json();
-        const msg = (data.errors || []).map(err => err.message).join(', ') || 'Something went wrong. Please try again.';
-        alert(msg);
+        alert('Something went wrong. Please try again.');
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Get My Free Estimate →';
       }
