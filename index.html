@@ -263,7 +263,7 @@
             <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-3 flex items-center gap-4">
               <input type="radio" name="size" value="Small" class="sr-only">
               <span class="w-20 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=160&h=128&fit=crop&q=80" alt="Small hole in wall" class="w-full h-full object-cover">
+                <img src="image/small.png" alt="Small hole in wall" class="w-full h-full object-cover">
               </span>
               <div>
                 <div class="font-bold text-slate-900">Small <span class="text-slate-400 font-normal text-sm">— under 4 inches</span></div>
@@ -322,6 +322,15 @@
                 class="mt-1.5 w-full border-2 border-slate-200 focus:border-navy-700 rounded-xl px-4 py-3.5 outline-none transition"/>
             </div>
           </div>
+          <!-- Optional description -->
+          <div class="mt-3">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+              Describe the damage <span class="text-slate-400 font-normal">(optional)</span>
+            </label>
+            <textarea name="description" rows="3" placeholder="E.g. large hole near the door, water stain on ceiling after a leak…"
+              class="w-full border-2 border-slate-200 focus:border-navy-700 rounded-xl px-4 py-3 text-sm outline-none transition resize-none"></textarea>
+          </div>
+
           <!-- Optional photo upload -->
           <div class="mt-4">
             <label class="block text-sm font-semibold text-slate-700 mb-1.5">
@@ -756,6 +765,8 @@
       fd.append('Zip Code', zipVal);
       fd.append('Repair Type', issues);
       fd.append('Damage Size', size);
+      const description = form.querySelector('textarea[name="description"]').value.trim();
+      if (description) fd.append('Description', description);
       const photoFile = document.getElementById('photoInput').files[0];
       if (photoFile) fd.append('Photo', photoFile);
 
