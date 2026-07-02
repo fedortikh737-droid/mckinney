@@ -208,7 +208,7 @@
             <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-3 flex items-center gap-3 group">
               <input type="checkbox" name="issue" value="Ceiling crack" class="sr-only">
               <span class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 ring-2 ring-transparent group-[.selected]:ring-navy-700 transition">
-                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=200&h=200&fit=crop&q=80" alt="Ceiling crack" class="w-full h-full object-cover" loading="lazy">
+                <img src="image/Crack.png" alt="Ceiling crack" class="w-full h-full object-cover" loading="lazy">
               </span>
               <div>
                 <div class="font-bold text-sm text-slate-900">Ceiling crack</div>
@@ -260,28 +260,34 @@
           <h3 class="text-xl sm:text-2xl font-bold text-navy-700">What's the approximate size of the damage?</h3>
           <p class="text-sm text-slate-500 mt-1">A quick comparison helps us quote accurately.</p>
           <div class="mt-5 space-y-3" data-singleselect="size">
-            <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-4 flex items-center gap-4">
+            <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-3 flex items-center gap-4">
               <input type="radio" name="size" value="Small" class="sr-only">
-              <span class="w-12 h-12 rounded-full bg-navy-50 grid place-items-center text-2xl">🔘</span>
+              <span class="w-20 h-16 rounded-xl overflow-hidden flex-shrink-0">
+                <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=160&h=128&fit=crop&q=80" alt="Small hole in wall" class="w-full h-full object-cover">
+              </span>
               <div>
-                <div class="font-bold text-slate-900">Small</div>
-                <div class="text-sm text-slate-500">Like a doorknob (under 4 inches)</div>
+                <div class="font-bold text-slate-900">Small <span class="text-slate-400 font-normal text-sm">— under 4 inches</span></div>
+                <div class="text-sm text-slate-500">Nail hole, doorknob dent</div>
               </div>
             </label>
-            <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-4 flex items-center gap-4">
+            <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-3 flex items-center gap-4">
               <input type="radio" name="size" value="Medium" class="sr-only">
-              <span class="w-12 h-12 rounded-full bg-navy-50 grid place-items-center text-2xl">🏀</span>
+              <span class="w-20 h-16 rounded-xl overflow-hidden flex-shrink-0">
+                <img src="image/Hole.png" alt="Medium hole in wall" class="w-full h-full object-cover">
+              </span>
               <div>
-                <div class="font-bold text-slate-900">Medium</div>
-                <div class="text-sm text-slate-500">Like a basketball (4–12 inches)</div>
+                <div class="font-bold text-slate-900">Medium <span class="text-slate-400 font-normal text-sm">— 4 to 12 inches</span></div>
+                <div class="text-sm text-slate-500">Fist-sized, doorknob punch-through</div>
               </div>
             </label>
-            <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-4 flex items-center gap-4">
+            <label class="quiz-option cursor-pointer border-2 border-slate-200 rounded-xl p-3 flex items-center gap-4">
               <input type="radio" name="size" value="Large" class="sr-only">
-              <span class="w-12 h-12 rounded-full bg-navy-50 grid place-items-center text-2xl">🧱</span>
+              <span class="w-20 h-16 rounded-xl overflow-hidden flex-shrink-0">
+                <img src="image/Water.png" alt="Large water damage wall" class="w-full h-full object-cover">
+              </span>
               <div>
-                <div class="font-bold text-slate-900">Large</div>
-                <div class="text-sm text-slate-500">Whole wall or ceiling section</div>
+                <div class="font-bold text-slate-900">Large <span class="text-slate-400 font-normal text-sm">— full wall/ceiling</span></div>
+                <div class="text-sm text-slate-500">Water damage, whole section</div>
               </div>
             </label>
           </div>
@@ -316,7 +322,20 @@
                 class="mt-1.5 w-full border-2 border-slate-200 focus:border-navy-700 rounded-xl px-4 py-3.5 outline-none transition"/>
             </div>
           </div>
-          <div class="mt-4 flex items-center gap-2 text-xs text-slate-500">
+          <!-- Optional photo upload -->
+          <div class="mt-4">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+              Photo of the damage <span class="text-slate-400 font-normal">(optional)</span>
+            </label>
+            <label id="uploadLabel" class="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-slate-300 hover:border-navy-700 rounded-xl p-4 cursor-pointer transition bg-slate-50 hover:bg-navy-50">
+              <input type="file" name="photo" id="photoInput" accept="image/*" class="sr-only">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="uploadIcon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="uploadText" class="text-xs text-slate-500 text-center">Tap to upload a photo — helps us give a more accurate estimate</span>
+            </label>
+            <img id="photoPreview" class="hidden mt-3 w-full max-h-40 object-cover rounded-xl border border-slate-200" alt="Preview">
+          </div>
+
+          <div class="mt-3 flex items-center gap-2 text-xs text-slate-500">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             Your information is 100% secure & never shared.
           </div>
@@ -623,6 +642,20 @@
     });
   }
 
+  // Photo preview
+  const photoInput = document.getElementById('photoInput');
+  const photoPreview = document.getElementById('photoPreview');
+  const uploadText = document.getElementById('uploadText');
+  photoInput.addEventListener('change', () => {
+    const file = photoInput.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      photoPreview.src = url;
+      photoPreview.classList.remove('hidden');
+      uploadText.textContent = file.name;
+    }
+  });
+
   // pre-fill zip placeholder behavior: user can type, but on focus highlight
   const zip = form.querySelector('input[name="zip"]');
   zip.addEventListener('input', e => {
@@ -723,6 +756,8 @@
       fd.append('Zip Code', zipVal);
       fd.append('Repair Type', issues);
       fd.append('Damage Size', size);
+      const photoFile = document.getElementById('photoInput').files[0];
+      if (photoFile) fd.append('Photo', photoFile);
 
       const res = await fetch('https://formspree.io/f/mzdlpggg', {
         method: 'POST',
